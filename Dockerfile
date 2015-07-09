@@ -1,7 +1,6 @@
 FROM ubuntu
 MAINTAINER Eran <eran@streamrail.com> 
 
-WORKDIR aws-scripts-mon
 
 RUN apt-get update && \
   apt-get install -y unzip && \
@@ -15,7 +14,9 @@ RUN wget http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringSc
 
 ADD awscreds.conf /etc/awscreds.conf
 
-ADD run.sh run.sh
+WORKDIR aws-scripts-mon
+
+ADD run.sh ./run.sh
 
 CMD ./run.sh
 
