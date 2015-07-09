@@ -11,9 +11,11 @@ RUN wget http://aws-cloudwatch.s3.amazonaws.com/downloads/CloudWatchMonitoringSc
   unzip CloudWatchMonitoringScripts-1.2.1.zip && \
   rm CloudWatchMonitoringScripts-1.2.1.zip
 
+ADD awscreds.conf /etc/awscreds.conf
+
 WORKDIR aws-scripts-mon
 
 CMD ./mon-put-instance-data.pl \
   --mem-util --mem-used --mem-avail \
   --disk-path=/ --disk-space-util --disk-space-avail --disk-space-used \
-  --auto-scaling
+  --aws-credential-file=/etc/awscreds.conf
