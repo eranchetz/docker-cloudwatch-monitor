@@ -1,0 +1,24 @@
+---
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - echo $CIRCLE_SHA1 > deploy.hash
+    - docker info
+    - ./prebuild.sh
+    - docker build -t streamrail/docker-cloudwatch-monitor:latest .
+
+test:
+  override:
+     - echo notest
+
+deployment:
+  hub:
+    branch: master 
+    commands:
+      - docker tag `docker images -q | head -1` streamrail/docker-cloudwatch-monitor:$CIRCLE_SHA1
+      - docker login -e "$DOCKER_EMAIL" -u $DOCKER_USER --password=$DOCKER_PASSWORD
+      - docker push streamrail/docker-cloudwatch-monitor
+      #- ./deploy.eb.sh  $CIRCLE_SHA1
