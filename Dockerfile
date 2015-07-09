@@ -18,6 +18,8 @@ WORKDIR aws-scripts-mon
 
 ADD run.sh ./run.sh
 
+# Fix damn script to work inside docker 
+CMD  sed -i 's/-k -l -P/-k -P/' mon-put-instance-data.pl
 CMD ./run.sh
 
 #CMD ./mon-put-instance-data.pl \
